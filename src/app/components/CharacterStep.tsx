@@ -60,7 +60,7 @@ export default function CharacterStep() {
     try {
       const result = await generateCharacter(loglineList[selectedIdx], idea)
       setCharacters(result)
-      router.push('/?placeholder')
+      router.push('/?acts')
     } catch (e: unknown) {
       if (e && typeof e === 'object' && 'message' in e) {
         setError((e as { message?: string }).message || 'Failed to generate character')

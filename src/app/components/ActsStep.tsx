@@ -47,7 +47,7 @@ export default function ActsStep() {
     try {
       const acts = await generate3Acts({ characters: chosen, logline, idea })
       setActs(acts)
-      router.push('/?placeholder')
+      router.push('/?scene')
     }  catch (e: unknown) {
       if (e && typeof e === 'object' && 'message' in e) {
         setError((e as { message?: string }).message || 'Failed to generate 3 Acts')

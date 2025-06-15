@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import LoglineStep from './components/LoglineStep'
@@ -14,7 +14,7 @@ const steps = [
   { key: 'character', label: 'Character' },
   { key: 'acts', label: 'Three-Act Structure' },
   { key: 'scene', label: 'Scene' },
-  { key: 'write', label: 'Script Output' },
+  { key: 'write', label: 'Write' },
   { key: 'placeholder', label: 'Placeholder' },
 ]
 
@@ -38,7 +38,7 @@ export default function MainPage() {
   }, [currentStep, router])
 
   // 右侧内容区分发
-  let content: React.ReactNode = null
+  let content: React.ReactNode
   switch (currentStep) {
     case 'logline':
       content = <LoglineStep />
