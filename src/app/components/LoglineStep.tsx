@@ -43,7 +43,7 @@ export default function LoglineStep() {
           <CardTitle>Step 1: Generate a Logline</CardTitle>
         </CardHeader>
         <CardContent>
-          <LoglineForm loading={loading} onSubmit={handleGenerateLogline} />
+          <LoglineForm loading={loading} onSubmitAction={handleGenerateLogline} />
           {error && (
             <Alert variant="destructive" className="mt-4">
               <AlertTitle>Error</AlertTitle>

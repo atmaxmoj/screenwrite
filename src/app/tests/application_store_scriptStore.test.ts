@@ -16,7 +16,7 @@ describe('scriptStore (Zustand)', () => {
   })
 
   it('setLogline updates logline', () => {
-    const logline = { summary: 'A story' }
+    const logline = { logline: 'a', protagonist: 'b', objective: 'c', conflict: 'd', genre: 'e', style: 'f', tone: 'g', explanation: 'h' }
     useScriptStore.getState().setLogline(logline)
     expect(useScriptStore.getState().logline).toEqual(logline)
   })
@@ -53,7 +53,7 @@ describe('scriptStore (Zustand)', () => {
 
   it('reset clears all state', () => {
     useScriptStore.getState().setIdea('x')
-    useScriptStore.getState().setLogline({ summary: 'y' })
+    useScriptStore.getState().setLogline({ logline: 'a', protagonist: 'b', objective: 'c', conflict: 'd', genre: 'e', style: 'f', tone: 'g', explanation: 'h' })
     useScriptStore.getState().setCharacters([{ name: 'z', role: 'p' }])
     useScriptStore.getState().setActs({ setup: 'a', conflict: 'b', resolution: 'c' })
     useScriptStore.getState().setScenes([{ title: 's', location: 'l', time: 't' }])
@@ -70,14 +70,14 @@ describe('scriptStore (Zustand)', () => {
 
   it('can simulate full data flow', () => {
     useScriptStore.getState().setIdea('idea')
-    useScriptStore.getState().setLogline({ summary: 'logline' })
+    useScriptStore.getState().setLogline({ logline: 'a', protagonist: 'b', objective: 'c', conflict: 'd', genre: 'e', style: 'f', tone: 'g', explanation: 'h' })
     useScriptStore.getState().setCharacters([{ name: 'A', role: 'p' }])
     useScriptStore.getState().setActs({ setup: 's', conflict: 'c', resolution: 'r' })
     useScriptStore.getState().setScenes([{ title: 'S', location: 'L', time: 'T' }])
     useScriptStore.getState().setScript({ content: 'script' })
     const state = useScriptStore.getState()
     expect(state.idea).toBe('idea')
-    expect(state.logline).toEqual({ summary: 'logline' })
+    expect(state.logline).toEqual({ logline: 'a', protagonist: 'b', objective: 'c', conflict: 'd', genre: 'e', style: 'f', tone: 'g', explanation: 'h' })
     expect(state.characters).toEqual([{ name: 'A', role: 'p' }])
     expect(state.acts).toEqual({ setup: 's', conflict: 'c', resolution: 'r' })
     expect(state.scenes).toEqual([{ title: 'S', location: 'L', time: 'T' }])

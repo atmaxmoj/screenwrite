@@ -1,5 +1,5 @@
 "use client"
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import LoglineStep from './components/LoglineStep'
@@ -29,6 +29,13 @@ export default function MainPage() {
     }
     return ''
   }, [params])
+
+  // 自动跳转到 logline
+  useEffect(() => {
+    if (!currentStep) {
+      router.replace('/?logline')
+    }
+  }, [currentStep, router])
 
   // 右侧内容区分发
   let content: React.ReactNode = null

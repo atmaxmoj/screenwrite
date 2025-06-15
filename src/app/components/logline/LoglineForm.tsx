@@ -6,19 +6,19 @@ import { Button } from '@/components/ui/button'
 
 interface LoglineFormProps {
   loading?: boolean
-  onSubmit: (idea: string) => void
+  onSubmitAction: (idea: string) => void
 }
 
 /**
  * LoglineForm 组件：输入 idea，提交生成 logline
  */
-export function LoglineForm({ loading, onSubmit }: LoglineFormProps) {
+export function LoglineForm({ loading, onSubmitAction }: LoglineFormProps) {
   const [idea, setIdea] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!idea.trim()) return
-    onSubmit(idea.trim())
+    onSubmitAction(idea.trim())
   }
 
   return (

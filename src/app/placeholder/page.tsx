@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 export default function LoglinePlaceholderPage() {
-  const { logline, setLogline } = useScriptStore()
+  const { loglineList, setLoglineList } = useScriptStore()
 
   return (
     <div className="py-10 px-4 max-w-2xl mx-auto">
@@ -13,9 +13,9 @@ export default function LoglinePlaceholderPage() {
           <CardTitle>Logline Placeholder (For Demo Only)</CardTitle>
         </CardHeader>
         <CardContent>
-          {logline && logline.length > 0 ? (
+          {Array.isArray(loglineList) && loglineList.length > 0 ? (
             <div className="space-y-6">
-              {logline.map((item, idx) => (
+              {loglineList.map((item: import('@/app/domain/models/logline').Logline, idx: number) => (
                 <div key={idx} className="p-4 border rounded bg-muted">
                   <div className="font-semibold mb-2">Logline {idx + 1}:</div>
                   <div className="mb-1"><span className="font-medium">Logline:</span> {item.logline}</div>
@@ -28,7 +28,7 @@ export default function LoglinePlaceholderPage() {
                   <div className="mb-1"><span className="font-medium">Explanation:</span> {item.explanation}</div>
                 </div>
               ))}
-              <Button variant="outline" className="mt-4" onClick={() => setLogline(null)}>
+              <Button variant="outline" className="mt-4" onClick={() => setLoglineList(null)}>
                 Back
               </Button>
             </div>
