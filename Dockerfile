@@ -1,13 +1,14 @@
-# Simple production Dockerfile for Next.js static export
+# Production Dockerfile for Next.js SSR/Edge/Node deployment
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npm run build && npm run export
+RUN npm run build
 
-# Serve static files with a lightweight web server
-FROM nginx:alpine AS runner
-COPY --from=builder /app/out /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"] 
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app .
+EXPOSE 3000
+CMD ["npm", "start"] 
