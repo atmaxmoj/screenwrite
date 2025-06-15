@@ -3,7 +3,7 @@ import * as React from 'react'
 import {Input} from '@/components/ui/input'
 import {Button} from '@/components/ui/button'
 
-interface LoglineFormProps {
+interface IdeationFormProps {
     idea: string
     action: (idea: string) => void
     loading?: boolean
@@ -11,9 +11,9 @@ interface LoglineFormProps {
 }
 
 /**
- * LoglineForm 组件：输入 idea，提交生成 logline
+ * Ideation 组件：输入 idea，提交生成 logline
  */
-export function LoglineForm({loading, idea, action, onSubmitAction}: LoglineFormProps) {
+export function IdeationForm({loading, idea, action, onSubmitAction}: IdeationFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         onSubmitAction()

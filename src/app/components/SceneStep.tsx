@@ -1,61 +1,86 @@
 "use client"
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useScriptStore } from '@/app/application/store/scriptStore'
-import { generateScene } from '@/app/application/usecases/generateScene'
-import ActsForm from './acts/ActsForm'
-import type { Acts } from '@/app/domain/models/acts'
+import { generateWrite } from '@/app/application/usecases/generateWrite'
+import { useState } from 'react'
+import SceneListForm from './scene/SceneListForm'
+import { useRouter } from 'next/navigation'
 
 /**
- * SceneStep: Handles scene generation step.
+ * SceneStep: Handles script output step (TODO placeholder).
  */
 export default function SceneStep() {
-  const router = useRouter()
   const idea = useScriptStore(s => s.idea)
   const logline = useScriptStore(s => s.logline)
   const characters = useScriptStore(s => s.characters)
   const acts = useScriptStore(s => s.acts)
-  const setScenes = useScriptStore(s => s.setScenes)
-  const [editActs, setEditActs] = useState<Acts | null>(acts ? JSON.parse(JSON.stringify(acts)) : null)
+  const scenes = useScriptStore(s => s.scenes)
+  const script = useScriptStore(s => s.script)
+  const setScript = useScriptStore(s => s.setScript)
+  const [editScenes, setEditScenes] = useState(scenes ? JSON.parse(JSON.stringify(scenes)) : [])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
-  if (!acts || !characters || !logline) {
-    return <div className="p-8">No acts, characters, or logline data. Please go back and complete previous steps.</div>
-  }
-
-  const handleActsChange = (newActs: Acts) => {
-    setEditActs(newActs)
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!editActs) return
+  const handleGenerate = async () => {
+    if (!editScenes || !characters || !logline || !idea || !acts) {
+      setError('Missing required data. Please complete all previous steps.')
+      return
+    }
     setLoading(true)
     setError(null)
     try {
-      const scenes = await generateScene({ structure: editActs, characters, logline, idea })
-      console.log(scenes);
-      setScenes(scenes)
-      router.push('/?write')
+      const result = await generateWrite({
+        scenes: editScenes,
+        structure: acts,
+        characters,
+        logline,
+        idea,
+      })
+      setScript(result)
+      router.push('/?finalscript')
     } catch (e: unknown) {
       if (e && typeof e === 'object' && 'message' in e) {
-        setError((e as { message?: string }).message || 'Failed to generate scenes')
+        setError((e as { message?: string }).message || 'Failed to generate script')
       } else {
-        setError('Failed to generate scenes')
+        setError('Failed to generate script')
       }
     } finally {
       setLoading(false)
     }
   }
 
+  if (!scenes) {
+    return <div className="p-8">No scene data. Please go back and generate scenes first.</div>
+  }
+
   return (
-    <ActsForm
-      acts={editActs!}
-      onActsChange={handleActsChange}
-      onSubmit={handleSubmit}
-      loading={loading}
-      error={error}
-    />
+    <div className="py-10 px-4 max-w-2xl mx-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle>Step 5: Script Output</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <SceneListForm scenes={editScenes} onScenesChange={setEditScenes} />
+          <Button onClick={handleGenerate} disabled={loading} className="my-6 w-full">
+            {loading ? 'Generating Script...' : 'Generate Final Script'}
+          </Button>
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          {script?.full_script && (
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Final Script Output</h3>
+              <pre className="bg-muted rounded p-4 whitespace-pre-wrap text-sm overflow-x-auto">{script.full_script}</pre>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   )
 } 

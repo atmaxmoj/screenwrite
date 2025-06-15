@@ -3,16 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useScriptStore } from '@/app/application/store/scriptStore'
 
 /**
- * PlaceholderStep: Displays character output (for demo only).
+ * FinalScriptStep: Displays character output (for demo only).
  */
-export default function PlaceholderStep() {
+export default function FinalScriptStep() {
   const script = useScriptStore((s) => s.script)
 
   return (
     <div className="py-10 px-4 max-w-2xl mx-auto">
       <Card>
         <CardHeader>
-          <CardTitle>Script Output</CardTitle>
+          <CardTitle>Final Script</CardTitle>
         </CardHeader>
         <CardContent>
           {script?.full_script ? (

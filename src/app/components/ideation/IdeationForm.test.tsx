@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { LoglineForm } from './LoglineForm'
+import { IdeationForm } from './IdeationForm'
 import React from 'react'
 
 describe('LoglineForm', () => {
@@ -8,13 +8,13 @@ describe('LoglineForm', () => {
     let idea = ''
     const setIdea = (val: string) => { idea = val }
     render(
-      <LoglineForm loading={false} idea={idea} action={setIdea} onSubmitAction={onSubmitAction} />
+      <IdeationForm loading={false} idea={idea} action={setIdea} onSubmitAction={onSubmitAction} />
     )
     const input = screen.getByPlaceholderText(/enter your story idea/i)
     fireEvent.change(input, { target: { value: 'my idea' } })
     // 受控组件，需重新渲染
     render(
-      <LoglineForm loading={false} idea={'my idea'} action={setIdea} onSubmitAction={onSubmitAction} />
+      <IdeationForm loading={false} idea={'my idea'} action={setIdea} onSubmitAction={onSubmitAction} />
     )
     const button = screen.getByRole('button')
     fireEvent.click(button)
@@ -25,7 +25,7 @@ describe('LoglineForm', () => {
     const onSubmitAction = jest.fn()
     const setIdea = jest.fn()
     render(
-      <LoglineForm loading={true} idea={''} action={setIdea} onSubmitAction={onSubmitAction} />
+      <IdeationForm loading={true} idea={''} action={setIdea} onSubmitAction={onSubmitAction} />
     )
     const button = screen.getByRole('button')
     expect(button).toBeDisabled()

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import LoglineStep from './LoglineStep'
+import IdeationStep from './IdeationStep'
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -14,9 +14,9 @@ jest.mock('next/navigation', () => ({
   usePathname: () => '/',
 }))
 
-describe('LoglineStep', () => {
+describe('IdeationStep', () => {
   it('renders logline form', () => {
-    render(<LoglineStep />)
+    render(<IdeationStep />)
     expect(screen.getByPlaceholderText(/idea/i)).toBeInTheDocument()
     expect(screen.getByText(/generate a logline/i)).toBeInTheDocument()
   })

@@ -2,20 +2,20 @@
 import React, { useEffect, useMemo } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import IdeationStep from './components/IdeationStep'
 import LoglineStep from './components/LoglineStep'
 import CharacterStep from './components/CharacterStep'
 import ActsStep from './components/ActsStep'
-import SceneStep from './components/SceneStep'
-import WriteStep from './components/WriteStep'
-import PlaceholderStep from './components/PlaceholderStep'
+import FinalScriptStep from './components/FinalScriptStep'
+import SceneStep from "@/app/components/SceneStep";
 
 const steps = [
+  { key: 'ideation', label: 'Ideation' },
   { key: 'logline', label: 'Logline' },
-  { key: 'character', label: 'Character' },
+  { key: 'characters', label: 'Characters' },
   { key: 'acts', label: 'Three-Act Structure' },
   { key: 'scene', label: 'Scene' },
-  { key: 'write', label: 'Write' },
-  { key: 'placeholder', label: 'Placeholder' },
+  { key: 'final', label: 'Final Script' },
 ]
 
 export default function MainPage() {
@@ -30,20 +30,22 @@ export default function MainPage() {
     return ''
   }, [params])
 
-  // 自动跳转到 logline
   useEffect(() => {
     if (!currentStep) {
-      router.replace('/?logline')
+      router.replace('/?ideation')
     }
   }, [currentStep, router])
 
   // 右侧内容区分发
   let content: React.ReactNode
   switch (currentStep) {
+    case 'ideation':
+      content = <IdeationStep />
+      break
     case 'logline':
       content = <LoglineStep />
       break
-    case 'character':
+    case 'characters':
       content = <CharacterStep />
       break
     case 'acts':
@@ -52,11 +54,8 @@ export default function MainPage() {
     case 'scene':
       content = <SceneStep />
       break
-    case 'write':
-      content = <WriteStep />
-      break
-    case 'placeholder':
-      content = <PlaceholderStep />
+    case 'finalscript':
+      content = <FinalScriptStep />
       break
     default:
       content = <div className="p-8">Welcome! Please select a step.</div>

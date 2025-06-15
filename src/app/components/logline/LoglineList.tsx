@@ -1,16 +1,6 @@
 import React from 'react'
 import { Input } from '@/components/ui/input'
-
-export interface Logline {
-  logline: string
-  protagonist: string
-  objective: string
-  conflict: string
-  genre: string
-  style: string
-  tone: string
-  explanation: string
-}
+import {Logline} from "@/app/domain/models/logline";
 
 interface LoglineListProps {
   loglines: Logline[]
