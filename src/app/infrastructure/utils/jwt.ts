@@ -6,7 +6,7 @@ import { KJUR } from 'jsrsasign'
  * @param secret - The secret string for HMAC-SHA256 signing.
  * @returns The signed JWT as a string.
  */
-export function signJWT(payload: Record<string, any>, secret: string): string {
+export function signJWT(payload: Record<string, unknown>, secret: string): string {
   // JWT header
   const header = { alg: 'HS256', typ: 'JWT' }
   // Stringify and base64url encode header and payload
@@ -22,7 +22,7 @@ export function signJWT(payload: Record<string, any>, secret: string): string {
  * @param payload - The payload object to encode in the JWT.
  * @returns The signed JWT as a string.
  */
-export function getJWT(payload: Record<string, any>): string {
+export function getJWT(payload: Record<string, unknown>): string {
   const secret = process.env.NEXT_PUBLIC_JWT_SECRET
   if (!secret) {
     throw new Error('JWT secret is not set in NEXT_PUBLIC_JWT_SECRET')
