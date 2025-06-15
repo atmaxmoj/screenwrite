@@ -8,6 +8,8 @@ import CharacterStep from './components/CharacterStep'
 import ActsStep from './components/ActsStep'
 import FinalScriptStep from './components/FinalScriptStep'
 import SceneStep from "@/app/components/SceneStep";
+import { useScriptStore } from '@/app/application/store/scriptStore'
+import GlobalLoadingBar from './components/GlobalLoadingBar'
 
 const steps = [
   { key: 'ideation', label: 'Ideation' },
@@ -15,12 +17,30 @@ const steps = [
   { key: 'characters', label: 'Characters' },
   { key: 'acts', label: 'Three-Act Structure' },
   { key: 'scene', label: 'Scene' },
-  { key: 'final', label: 'Final Script' },
+  { key: 'finalscript', label: 'Final Script' },
 ]
 
 export default function MainPage() {
   const params = useSearchParams()
   const router = useRouter()
+
+  // 全局 store 依赖数据
+  const loglineList = useScriptStore(s => s.loglineList)
+  const characters = useScriptStore(s => s.characters)
+  const acts = useScriptStore(s => s.acts)
+  const scenes = useScriptStore(s => s.scenes)
+  const script = useScriptStore(s => s.script)
+  const globalLoading = useScriptStore(s => s.globalLoading)
+
+  // 步骤禁用逻辑
+  const stepDisabled = [
+    false, // Ideation 永远可点
+    !loglineList || loglineList.length === 0, // Characters 需要 loglineList
+    !characters || characters.length === 0, // Acts 需要 characters
+    !acts, // Scene 需要 acts
+    !scenes || scenes.length === 0, // Final Script 需要 scenes
+    !script, // Final Script 需要 scenes
+  ]
 
   // 当前 step key
   const currentStep = useMemo(() => {
@@ -62,24 +82,28 @@ export default function MainPage() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      {/* 左侧导航栏 */}
-      <nav className="w-56 bg-muted/40 border-r flex flex-col py-8 px-4 gap-2 h-screen sticky top-0 left-0">
-        {steps.map((step) => (
-          <Button
-            key={step.key}
-            variant={currentStep === step.key ? 'default' : 'ghost'}
-            className="justify-start w-full"
-            onClick={() => router.push('/?' + step.key)}
-          >
-            {step.label}
-          </Button>
-        ))}
-      </nav>
-      {/* 右侧内容区 */}
-      <div className="flex-1">
-        {content}
+    <div className="flex flex-col min-h-screen">
+      <GlobalLoadingBar />
+      <div className="flex flex-1">
+        {/* 左侧导航栏 */}
+        <nav className="w-56 bg-muted/40 border-r flex flex-col py-8 px-4 gap-2 h-screen sticky top-0 left-0">
+          {steps.map((step, idx) => (
+            <Button
+              key={step.key}
+              variant={currentStep === step.key ? 'default' : 'ghost'}
+              className="justify-start w-full"
+              onClick={() => router.push('/?' + step.key)}
+              disabled={globalLoading || stepDisabled[idx]}
+            >
+              {step.label}
+            </Button>
+          ))}
+        </nav>
+        {/* 右侧内容区 */}
+        <div className="flex-1">
+          {content}
         </div>
+      </div>
     </div>
   )
 }

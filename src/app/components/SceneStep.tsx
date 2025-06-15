@@ -20,7 +20,8 @@ export default function SceneStep() {
   const script = useScriptStore(s => s.script)
   const setScript = useScriptStore(s => s.setScript)
   const [editScenes, setEditScenes] = useState(scenes ? JSON.parse(JSON.stringify(scenes)) : [])
-  const [loading, setLoading] = useState(false)
+  const setGlobalLoading = useScriptStore(s => s.setGlobalLoading)
+  const globalLoading = useScriptStore(s => s.globalLoading)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
@@ -29,7 +30,7 @@ export default function SceneStep() {
       setError('Missing required data. Please complete all previous steps.')
       return
     }
-    setLoading(true)
+    setGlobalLoading(true)
     setError(null)
     try {
       const result = await generateWrite({
@@ -48,7 +49,7 @@ export default function SceneStep() {
         setError('Failed to generate script')
       }
     } finally {
-      setLoading(false)
+      setGlobalLoading(false)
     }
   }
 
@@ -64,8 +65,8 @@ export default function SceneStep() {
         </CardHeader>
         <CardContent>
           <SceneListForm scenes={editScenes} onScenesChange={setEditScenes} />
-          <Button onClick={handleGenerate} disabled={loading} className="my-6 w-full">
-            {loading ? 'Generating Script...' : 'Generate Final Script'}
+          <Button onClick={handleGenerate} disabled={globalLoading} className="my-6 w-full">
+            {globalLoading ? 'Generating Script...' : 'Generate Final Script'}
           </Button>
           {error && (
             <Alert variant="destructive" className="mb-4">

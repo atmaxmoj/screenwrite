@@ -18,9 +18,10 @@ export default function CharacterStep() {
   const logline = useScriptStore(s => s.logline)
   const characters = useScriptStore(s => s.characters)
   const setActs = useScriptStore(s => s.setActs)
+  const setGlobalLoading = useScriptStore(s => s.setGlobalLoading)
+  const globalLoading = useScriptStore(s => s.globalLoading)
   const [selected, setSelected] = useState(() => characters ? characters.map(() => true) : [])
   const [editList, setEditList] = useState<Character[]>(characters ? JSON.parse(JSON.stringify(characters)) : [])
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   if (!characters || !logline) {
@@ -42,7 +43,7 @@ export default function CharacterStep() {
       setError('Please select at least one character.')
       return
     }
-    setLoading(true)
+    setGlobalLoading(true)
     setError(null)
     try {
       const acts = await generate3Acts({ characters: chosen, logline, idea })
@@ -55,7 +56,7 @@ export default function CharacterStep() {
         setError('Failed to generate 3 Acts')
       }
     } finally {
-      setLoading(false)
+      setGlobalLoading(false)
     }
   }
 
@@ -95,8 +96,8 @@ export default function CharacterStep() {
                 </div>
               ))}
             </div>
-            <Button type="submit" className="mt-6 w-full" disabled={loading}>
-              {loading ? 'Generating 3 Acts...' : 'Generate 3 Acts'}
+            <Button type="submit" className="mt-6 w-full" disabled={globalLoading}>
+              {globalLoading ? 'Generating 3 Acts...' : 'Generate 3 Acts'}
             </Button>
             {error && (
               <Alert variant="destructive" className="mt-4">

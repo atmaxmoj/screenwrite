@@ -11,7 +11,8 @@ import { useScriptStore } from '@/app/application/store/scriptStore'
  * IdeationStep: Handles logline generation step.
  */
 export default function IdeationStep() {
-  const [loading, setLoading] = useState(false)
+  const setGlobalLoading = useScriptStore(s => s.setGlobalLoading)
+  const globalLoading = useScriptStore(s => s.globalLoading)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const setLoglineList = useScriptStore((s) => s.setLoglineList)
@@ -19,7 +20,7 @@ export default function IdeationStep() {
   const setIdea = useScriptStore((s) => s.setIdea)
 
   const handleGenerateLogline = async () => {
-    setLoading(true)
+    setGlobalLoading(true)
     setError(null)
     try {
       const result = await generateLogline(idea)
@@ -32,7 +33,7 @@ export default function IdeationStep() {
         setError('Failed to generate logline')
       }
     } finally {
-      setLoading(false)
+      setGlobalLoading(false)
     }
   }
 
@@ -43,7 +44,7 @@ export default function IdeationStep() {
           <CardTitle>Step 1: Generate a Logline</CardTitle>
         </CardHeader>
         <CardContent>
-          <IdeationForm loading={loading} idea={idea} action={setIdea} onSubmitAction={handleGenerateLogline} />
+          <IdeationForm loading={globalLoading} idea={idea} action={setIdea} onSubmitAction={handleGenerateLogline} />
           {error && (
             <Alert variant="destructive" className="mt-4">
               <AlertTitle>Error</AlertTitle>

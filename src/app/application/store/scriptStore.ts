@@ -17,6 +17,7 @@ export interface ScriptState {
   acts: Acts | null
   scenes: Scene[] | null
   script: Script | null
+  globalLoading: boolean
   setIdea: (idea: string) => void
   setLoglineList: (list: Logline[] | null) => void
   setLogline: (logline: Logline | null) => void
@@ -24,6 +25,7 @@ export interface ScriptState {
   setActs: (acts: Acts) => void
   setScenes: (scenes: Scene[]) => void
   setScript: (script: Script) => void
+  setGlobalLoading: (loading: boolean) => void
   reset: () => void
 }
 
@@ -39,6 +41,7 @@ export const useScriptStore = create<ScriptState>((set) => ({
   acts: null,
   scenes: null,
   script: null,
+  globalLoading: false,
   setIdea: (idea) => set({ idea }),
   setLoglineList: (list) => set({ loglineList: list }),
   setLogline: (logline) => set({ logline }),
@@ -46,6 +49,7 @@ export const useScriptStore = create<ScriptState>((set) => ({
   setActs: (acts) => set({ acts }),
   setScenes: (scenes) => set({ scenes }),
   setScript: (script) => set({ script }),
+  setGlobalLoading: (loading) => set({ globalLoading: loading }),
   reset: () => set({
     idea: '',
     loglineList: null,
@@ -54,5 +58,6 @@ export const useScriptStore = create<ScriptState>((set) => ({
     acts: null,
     scenes: null,
     script: null,
+    globalLoading: false,
   }),
 })) 

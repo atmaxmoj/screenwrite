@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useScriptStore } from '@/app/application/store/scriptStore'
 import { generateCharacter } from '@/app/application/usecases/generateCharacter'
@@ -29,8 +28,9 @@ export default function LoglineStep() {
     }
     return 0
   })
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const setGlobalLoading = useScriptStore(s => s.setGlobalLoading)
+  const globalLoading = useScriptStore(s => s.globalLoading)
 
   // 处理 radio 选择
   const handleSelect = (idx: number) => {
@@ -55,7 +55,7 @@ export default function LoglineStep() {
       setError('Please select and edit a logline, and ensure idea is not empty.')
       return
     }
-    setLoading(true)
+    setGlobalLoading(true)
     setError(null)
     try {
       const result = await generateCharacter(loglineList[selectedIdx], idea)
@@ -68,7 +68,7 @@ export default function LoglineStep() {
         setError('Failed to generate character')
       }
     } finally {
-      setLoading(false)
+      setGlobalLoading(false)
     }
   }
 
@@ -90,8 +90,8 @@ export default function LoglineStep() {
               onSelect={handleSelect}
               onFieldChange={handleFieldChange}
             />
-            <Button type="submit" className="mt-6 w-full" disabled={loading}>
-              {loading ? 'Generating Characters...' : 'Generate Characters'}
+            <Button type="submit" className="mt-6 w-full" disabled={globalLoading}>
+              {globalLoading ? 'Generating Characters...' : 'Generate Characters'}
             </Button>
             {error && (
               <Alert variant="destructive" className="mt-4">

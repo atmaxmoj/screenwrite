@@ -16,8 +16,9 @@ export default function ActsStep() {
   const characters = useScriptStore(s => s.characters)
   const acts = useScriptStore(s => s.acts)
   const setScenes = useScriptStore(s => s.setScenes)
+  const setGlobalLoading = useScriptStore(s => s.setGlobalLoading)
+  const globalLoading = useScriptStore(s => s.globalLoading)
   const [editActs, setEditActs] = useState<Acts | null>(acts ? JSON.parse(JSON.stringify(acts)) : null)
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   if (!acts || !characters || !logline) {
@@ -31,7 +32,7 @@ export default function ActsStep() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editActs) return
-    setLoading(true)
+    setGlobalLoading(true)
     setError(null)
     try {
       const scenes = await generateScene({ structure: editActs, characters, logline, idea })
@@ -44,7 +45,7 @@ export default function ActsStep() {
         setError('Failed to generate scenes')
       }
     } finally {
-      setLoading(false)
+      setGlobalLoading(false)
     }
   }
 
@@ -53,7 +54,7 @@ export default function ActsStep() {
       acts={editActs!}
       onActsChange={handleActsChange}
       onSubmit={handleSubmit}
-      loading={loading}
+      loading={globalLoading}
       error={error}
     />
   )
