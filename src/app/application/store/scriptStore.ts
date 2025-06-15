@@ -2,20 +2,11 @@ import { create } from 'zustand'
 import type { Logline } from '@/app/domain/models/logline'
 import type { Character } from '@/app/domain/models/character'
 import type { Acts } from '@/app/domain/models/acts'
+import type { Scene } from '@/app/domain/models/scene'
+import type { Script } from '@/app/domain/models/script'
 
 // Type definitions for each step of the script generation process
 // You should replace these with more detailed types from your domain/models when available
-export interface Scene {
-  title: string
-  location: string
-  time: string
-  style?: string
-  description?: string
-}
-
-export interface Script {
-  content: string
-}
 
 // Global state interface for the script writing process
 export interface ScriptState {

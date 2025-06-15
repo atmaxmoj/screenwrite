@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useScriptStore } from '@/app/application/store/scriptStore'
 import { generateScene } from '@/app/application/usecases/generateScene'
-import SceneForm from './scene/SceneForm'
+import ActsForm from './acts/ActsForm'
 import type { Acts } from '@/app/domain/models/acts'
 
 /**
@@ -35,6 +35,7 @@ export default function SceneStep() {
     setError(null)
     try {
       const scenes = await generateScene({ structure: editActs, characters, logline, idea })
+      console.log(scenes);
       setScenes(scenes)
       router.push('/?write')
     } catch (e: unknown) {
@@ -49,7 +50,7 @@ export default function SceneStep() {
   }
 
   return (
-    <SceneForm
+    <ActsForm
       acts={editActs!}
       onActsChange={handleActsChange}
       onSubmit={handleSubmit}

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { Acts } from '@/app/domain/models/acts'
 
-interface SceneFormProps {
+interface ActsFormProps {
   acts: Acts
   onActsChange: (acts: Acts) => void
   onSubmit: (e: React.FormEvent) => void
@@ -12,7 +12,7 @@ interface SceneFormProps {
   error?: string | null
 }
 
-export default function SceneForm({ acts, onActsChange, onSubmit, loading, error }: SceneFormProps) {
+export default function ActsForm({ acts, onActsChange, onSubmit, loading, error }: ActsFormProps) {
   const handleFieldChange = (act: keyof Acts, field: string, value: string) => {
     onActsChange({
       ...acts,
