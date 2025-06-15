@@ -23,8 +23,26 @@ describe('scriptStore (Zustand)', () => {
 
   it('setCharacters updates characters', () => {
     const characters = [
-      { name: 'Alice', role: 'protagonist' },
-      { name: 'Bob', role: 'antagonist' }
+      {
+        name: 'Alice',
+        role: 'protagonist',
+        summary: 'summary',
+        motivation: 'motivation',
+        flaw: 'flaw',
+        arc: 'arc',
+        voice_style: 'voice',
+        backstory: 'backstory'
+      },
+      {
+        name: 'Bob',
+        role: 'antagonist',
+        summary: 'summary',
+        motivation: 'motivation',
+        flaw: 'flaw',
+        arc: 'arc',
+        voice_style: 'voice',
+        backstory: 'backstory'
+      }
     ]
     useScriptStore.getState().setCharacters(characters)
     expect(useScriptStore.getState().characters).toEqual(characters)
@@ -54,7 +72,15 @@ describe('scriptStore (Zustand)', () => {
   it('reset clears all state', () => {
     useScriptStore.getState().setIdea('x')
     useScriptStore.getState().setLogline({ logline: 'a', protagonist: 'b', objective: 'c', conflict: 'd', genre: 'e', style: 'f', tone: 'g', explanation: 'h' })
-    useScriptStore.getState().setCharacters([{ name: 'z', role: 'p' }])
+    useScriptStore.getState().setCharacters([{
+      name: 'z', role: 'p',
+      summary: '',
+      motivation: '',
+      flaw: '',
+      arc: '',
+      voice_style: '',
+      backstory: ''
+    }])
     useScriptStore.getState().setActs({ setup: 'a', conflict: 'b', resolution: 'c' })
     useScriptStore.getState().setScenes([{ title: 's', location: 'l', time: 't' }])
     useScriptStore.getState().setScript({ content: 'sc' })
@@ -71,7 +97,15 @@ describe('scriptStore (Zustand)', () => {
   it('can simulate full data flow', () => {
     useScriptStore.getState().setIdea('idea')
     useScriptStore.getState().setLogline({ logline: 'a', protagonist: 'b', objective: 'c', conflict: 'd', genre: 'e', style: 'f', tone: 'g', explanation: 'h' })
-    useScriptStore.getState().setCharacters([{ name: 'A', role: 'p' }])
+    useScriptStore.getState().setCharacters([{
+      name: 'A', role: 'p',
+      summary: '',
+      motivation: '',
+      flaw: '',
+      arc: '',
+      voice_style: '',
+      backstory: ''
+    }])
     useScriptStore.getState().setActs({ setup: 's', conflict: 'c', resolution: 'r' })
     useScriptStore.getState().setScenes([{ title: 'S', location: 'L', time: 'T' }])
     useScriptStore.getState().setScript({ content: 'script' })

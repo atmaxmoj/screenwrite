@@ -15,16 +15,16 @@ export default function LoglineStep() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const setLoglineList = useScriptStore((s) => s.setLoglineList)
+  const idea = useScriptStore((s) => s.idea)
+  const setIdea = useScriptStore((s) => s.setIdea)
 
-  const handleGenerateLogline = async (idea: string) => {
+  const handleGenerateLogline = async () => {
     setLoading(true)
     setError(null)
     try {
       const result = await generateLogline(idea)
       setLoglineList(result)
-      // 这里可用 props/state 传递 logline output
-      // 目前直接跳转到 placeholder
-      router.push('/?placeholder')
+      router.push('/?character')
     } catch (e: unknown) {
       if (e && typeof e === 'object' && 'message' in e) {
         setError((e as { message?: string }).message || 'Failed to generate logline')
@@ -43,7 +43,7 @@ export default function LoglineStep() {
           <CardTitle>Step 1: Generate a Logline</CardTitle>
         </CardHeader>
         <CardContent>
-          <LoglineForm loading={loading} onSubmitAction={handleGenerateLogline} />
+          <LoglineForm loading={loading} idea={idea} action={setIdea} onSubmitAction={handleGenerateLogline} />
           {error && (
             <Alert variant="destructive" className="mt-4">
               <AlertTitle>Error</AlertTitle>

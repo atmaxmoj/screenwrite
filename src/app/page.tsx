@@ -80,7 +80,7 @@ export default function MainPage() {
       {/* 右侧内容区 */}
       <div className="flex-1">
         {content}
-      </div>
+        </div>
     </div>
   )
 }
